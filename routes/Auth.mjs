@@ -111,7 +111,7 @@ Router.post(
   }
 );
 
-//Show user data:POST "api/auth/getuser" {auth req}
+//Get data from userSchema:POST "api/auth/getuser" {auth req}
 Router.post("/getuser", fetchUser, async (req, res) => {
   try {
     const id = req.user.id;
