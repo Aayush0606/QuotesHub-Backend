@@ -10,6 +10,7 @@ const { Schema } = mongoose;
 const Router = Express.Router();
 const JWT_SCERET = process.env.JWT_SCERET;
 import fetchUser from "../middleware/FetchUser.mjs";
+let success = false;
 
 //Create a user:Post "api/auth/newuser" {No auth req}
 Router.post(
@@ -60,11 +61,11 @@ Router.post(
 
       //authtoken using jwt for verification purpose
       const authToken = jwt.sign(data, JWT_SCERET);
-
-      res.json({ authToken });
+      success = true;
+      res.json({ success, authToken });
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send("Database error");
+      success = false;
+      res.status(500).json({ success, error });
     }
   }
 );
@@ -102,10 +103,13 @@ Router.post(
 
           //authtoken using jwt for verification purpose
           const authToken = jwt.sign(data, JWT_SCERET);
-          res.status(200).json({ authToken });
+          success = true;
+          res.status(200).json({ success, authToken });
         }
       }
     } catch (error) {
+      success = false;
+      res.status(500).json({ success, error });
       res.status(500).send("Database error");
     }
   }
@@ -117,12 +121,15 @@ Router.post("/getuser", fetchUser, async (req, res) => {
     const id = req.user.id;
     const user = await User.findById(id).select("-pass");
     if (!user) {
-      return res.send(401).json({ error: "Give correct auth token" });
+      success = false;
+      return res.send(401).json({ success, error: "Give correct auth token" });
     } else {
-      res.send(user);
+      success = true;
+      res.json({ success, user });
     }
   } catch (error) {
-    res.status(500).send("Database error");
+    success = false;
+    res.status(500).json({ success, error });
   }
 });
 

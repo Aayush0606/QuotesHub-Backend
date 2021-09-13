@@ -10,7 +10,7 @@ import { body, validationResult } from "express-validator";
 
 //Get all user saved quotes :GET "api/quotes/getquotes"
 Router.get("/getquotes", fetchUser, async (req, res) => {
-  const userQuotes = await Quotes.find(req.body.user);
+  const userQuotes = await Quotes.find({ user: req.user.id });
   res.json(userQuotes);
 });
 
@@ -33,7 +33,7 @@ Router.post(
     }
     try {
       const { anime, quote, character } = req.body;
-      //checking for same orevious quote
+      //checking for same previous quote
       const checkPrev = await Quotes.findOne({ quote });
       if (checkPrev) {
         return res.status(400).send("quote already exist");
