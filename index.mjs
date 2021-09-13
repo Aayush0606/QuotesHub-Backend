@@ -1,4 +1,5 @@
 import Express from "express";
+import cors from "cors";
 import connectToMongo from "./dataBase.mjs";
 import Auth from "./routes/Auth.mjs";
 import Quotes from "./routes/Quotes.mjs";
@@ -8,6 +9,7 @@ const App = Express();
 
 const port = 8000;
 
+App.use(cors());
 App.use(Express.json());
 
 App.get("/", (req, res) => {
