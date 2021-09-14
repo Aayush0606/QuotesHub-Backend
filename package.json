@@ -4,7 +4,7 @@
   "description": "your ultimate quote destination",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.mjs"
+    "start": "node index.mjs"
   },
   "author": "",
   "license": "ISC",
