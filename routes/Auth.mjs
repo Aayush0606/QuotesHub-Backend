@@ -89,10 +89,12 @@ Router.post(
       const { email, pass } = req.body;
       const user = await User.findOne({ email });
       if (!user) {
+        success = false;
         return res.status(404).send("Wromg credentials!!");
       } else {
         const checkPass = await bcrypt.compare(pass, user.pass);
         if (!checkPass) {
+          success = false;
           return res.status(404).send("Wromg credentials!!");
         } else {
           const data = {
