@@ -6,18 +6,20 @@ import Quotes from "./routes/Quotes.mjs";
 import http from "http";
 import { Server, Socket } from "socket.io";
 connectToMongo();
+import dotenv from "dotenv";
+dotenv.config();
 
 const App = Express();
 const server = http.createServer(App);
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 App.use(cors());
 App.use(Express.json());
 
 const io = new Server(server, {
   cors: {
-    origin: `http://localhost:3000`,
+    origin: process.env.CLIENT_ORIGIN,
     methods: ["GET", "POST"],
   },
 });
